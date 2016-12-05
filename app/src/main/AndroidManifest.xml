@@ -3,6 +3,7 @@
     package="com.example.suzukisusumu_sist.signage_download">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +18,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DownloadActivity"></activity>
+        <activity android:name=".DownloadActivity" />
+
+        <receiver
+            android:name=".DownloadReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <!-- ▼ダウンロードマネージャでのダウンロード完了を検知▼ -->
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
