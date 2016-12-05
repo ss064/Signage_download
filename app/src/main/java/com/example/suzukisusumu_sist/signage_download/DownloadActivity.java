@@ -14,26 +14,27 @@ public class DownloadActivity extends AppCompatActivity {
     TextView tv;
     DownloadManager downloadManager;
     static int downloadNum;
+    static String[] urls;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-
-        String[] urls = getIntent().getStringExtra("urls").split("\r\n");
         tv = (TextView)findViewById(R.id.textView2);
-        tv.setText(getIntent().getStringExtra("urls"));
-        //ダウンロードした件数が、URLsの件数を超えていたら、再生Activityに遷移する。
+        tv.setText(String.valueOf(downloadNum));
+        //ダウンロードした件数が、URLsの件数を超えたら、再生Activityに遷移する。
         if(downloadNum<urls.length) {
-            VideoDownload(urls[downloadNum++]);
+            tv.setText(urls[downloadNum]);
+            VideoDownload(urls[downloadNum]);
+            downloadNum++;
         }
         else{
-
             Intent intent =new Intent();
             intent.setClassName(getPackageName(),"com.example.suzukisusumu_sist.signage_download.VideoActivity");
             startActivity(intent);
         }
     }
 
+    //s_urlの動画をダウンロード,完了後DownloadReceiverに遷移
     private void VideoDownload(String s_url){
         //URIを生成する
         downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
@@ -50,6 +51,5 @@ public class DownloadActivity extends AppCompatActivity {
         int idStatus = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
         cursor.moveToFirst();
         Log.d("DownloadManagerSample", cursor.getString(idStatus));
-
     }
 }
