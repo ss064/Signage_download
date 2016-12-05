@@ -21,7 +21,7 @@ public class DownloadReceiver extends BroadcastReceiver {
 
             if (id != -1) {
                 Intent resultIntent = new Intent();
-                resultIntent.setClassName(context.getPackageName(),"com.example.suzukisusumu_sist.signage_download.VideoActivity");
+                resultIntent.setClassName(context.getPackageName(),"com.example.suzukisusumu_sist.signage_download.DownloadActivity");
                 resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 resultIntent.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, id);
                 try {

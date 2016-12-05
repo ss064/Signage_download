@@ -25,6 +25,7 @@ public class InitialActivity extends AppCompatActivity implements AsyncTaskGetJs
         intent.setClassName(getPackageName(),"com.example.suzukisusumu_sist.signage_download.DownloadActivity");
         intent.putExtra("urls",result);
         try {
+            DownloadActivity.downloadNum=0;
             startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(this, "対象のアプリがありません", Toast.LENGTH_SHORT).show();
