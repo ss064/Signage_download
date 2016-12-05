@@ -27,6 +27,7 @@ public class DownloadActivity extends AppCompatActivity {
             VideoDownload(urls[downloadNum++]);
         }
         else{
+
             Intent intent =new Intent();
             intent.setClassName(getPackageName(),"com.example.suzukisusumu_sist.signage_download.VideoActivity");
             startActivity(intent);
