@@ -28,21 +28,17 @@ public class DownloadActivity extends AppCompatActivity {
         downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(s_url);
         DownloadManager.Request request = new DownloadManager.Request(uri);
-        tv.setText(uri.getPath());
-        //DownloadManager.Request request = new DownloadManager.Request(uriBuilder.build());
         //保存場所、形式、ファイル名を指定
-
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES,"test.mp4");
-        request.setTitle("Test.mp4");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES,"/signage"+uri.getPath());
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setMimeType("video/mp4");
         long id=downloadManager.enqueue(request);
-
         DownloadManager.Query query = new DownloadManager.Query();
         query.setFilterById(id);
         Cursor cursor = downloadManager.query(query);
         int idStatus = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
         cursor.moveToFirst();
         Log.d("DownloadManagerSample", cursor.getString(idStatus));
+
     }
 }

@@ -20,16 +20,21 @@ public class DownloadReceiver extends BroadcastReceiver {
             Toast.makeText(context, "Download Complete ID : " + id, Toast.LENGTH_LONG).show();
 
             if (id != -1) {
-                Intent resultIntent = new Intent(context, VideoActivity.class);
+                Intent resultIntent = new Intent();
+                resultIntent.setClassName(context.getPackageName(),"com.example.suzukisusumu_sist.signage_download.VideoActivity");
                 resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 resultIntent.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, id);
-                context.startActivity(resultIntent);
+                try {
+                    context.startActivity(resultIntent);
+                } catch (Exception e) {
+                    Toast.makeText(context, "対象のアプリがありません", Toast.LENGTH_SHORT).show();
+                }
             }
         } else {
             // ダウンロードマネージャの通知領域をクリックした場合はメッセージ表示のみ
             Toast.makeText(context, intent.getAction(), Toast.LENGTH_LONG).show();
         }
 
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 }
