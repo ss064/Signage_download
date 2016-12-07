@@ -14,22 +14,27 @@ public class InitialActivity extends AppCompatActivity implements AsyncTaskGetJs
         setContentView(R.layout.activity_initial);
         String androidId=android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         AsyncTaskGetJson asyncTaskGetJson = new AsyncTaskGetJson(this,androidId);
-        asyncTaskGetJson.execute();
+        try{
+            asyncTaskGetJson.execute();
+        }catch (Exception e){
+            Toast.makeText(this, "JSONを取得できませんでした", Toast.LENGTH_SHORT).show();
+        }
+
         tv = (TextView) findViewById(R.id.textView);
     }
 
     @Override
     public  void onPostExecute(String result){
         tv.setText(result);
+        DownloadActivity.downloadNum=0;
         Intent intent = new Intent();
         intent.setClassName(getPackageName(),"com.example.suzukisusumu_sist.signage_download.DownloadActivity");
         intent.putExtra("urls",result);
         try {
-            DownloadActivity.downloadNum=0;
             DownloadActivity.urls=result.split("\r\n");
             startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(this, "対象のアプリがありません", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "対象のアプリがありません:InitialActivity", Toast.LENGTH_SHORT).show();
         }
     }
 }

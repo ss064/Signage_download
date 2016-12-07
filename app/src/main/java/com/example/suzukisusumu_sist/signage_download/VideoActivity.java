@@ -68,6 +68,7 @@ public class VideoActivity extends AppCompatActivity {
         }
         if(keyCode== KeyEvent.KEYCODE_MEDIA_PLAY) video.start();
         if(keyCode== KeyEvent.KEYCODE_MEDIA_PAUSE) video.pause();
+        if(keyCode== KeyEvent.KEYCODE_BACK) finish();
         return super.onKeyDown(keyCode, event);
     }
 

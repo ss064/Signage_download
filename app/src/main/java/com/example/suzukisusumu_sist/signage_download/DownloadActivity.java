@@ -22,14 +22,19 @@ public class DownloadActivity extends AppCompatActivity {
         tv = (TextView)findViewById(R.id.textView2);
         tv.setText(String.valueOf(downloadNum));
         //ダウンロードした件数が、URLsの件数を超えたら、再生Activityに遷移する。
+        Log.d("downloadNum",String.valueOf(downloadNum));
+        Log.d("urls.length",String.valueOf(urls.length));
+        Log.d("urls[0]",urls[0]);
         if(downloadNum<urls.length) {
-            tv.setText(urls[downloadNum]);
+            tv.setText("Downloading:"+urls[downloadNum]);
             VideoDownload(urls[downloadNum]);
             downloadNum++;
         }
         else{
+            Log.d("NewActivity","urls");
             Intent intent =new Intent();
             intent.setClassName(getPackageName(),"com.example.suzukisusumu_sist.signage_download.VideoActivity");
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     }
