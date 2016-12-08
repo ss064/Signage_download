@@ -65,6 +65,7 @@ public class AsyncTaskGetJson extends AsyncTask<Void, Void, String> {
         }
         catch (Exception e) {
             e.printStackTrace();
+            result = "error";
         }
         Log.d("Result",result);
         return result;
