@@ -2,16 +2,27 @@ package com.example.suzukisusumu_sist.signage_download;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class InitialActivity extends AppCompatActivity implements AsyncTaskGetJson.AsyncCallBack{
     TextView tv;
+    private String videoPath= Environment.getExternalStorageDirectory().getPath() + "/" + Environment.DIRECTORY_MOVIES +"/"+"Signage";
+    private File[] files = new File(videoPath).listFiles();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial);
+
+        if(!filesDelete()) {
+            Log.d("FilesDelete","delete Failed");
+        }
+
         String androidId=android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         AsyncTaskGetJson asyncTaskGetJson = new AsyncTaskGetJson(this,androidId);
         try{
@@ -19,10 +30,25 @@ public class InitialActivity extends AppCompatActivity implements AsyncTaskGetJs
         }catch (Exception e){
 
         }
-
         tv = (TextView) findViewById(R.id.textView);
     }
 
+    //このActivityがBackgroundになったとき、Activityを終了する。
+    @Override
+    protected void onPause(){
+        super.onPause();
+        finish();
+    }
+
+    private boolean filesDelete(){
+        for (File file:files) {
+            if(!file.delete()) {
+                return false;
+            }
+            Toast.makeText(this,file.getPath()+"delete",Toast.LENGTH_SHORT).show();
+        }
+        return true;
+    }
     @Override
     public  void onPostExecute(String result){
         if(result.equals("error")){
@@ -43,7 +69,6 @@ public class InitialActivity extends AppCompatActivity implements AsyncTaskGetJs
                     try {
                         Toast.makeText(this, "デバイスを登録してください。", Toast.LENGTH_SHORT).show();
                         startActivity(intent);
-                        finish();
                     } catch (Exception e) {
                         Toast.makeText(this, "PostAndroidIDを起動できませんでした。", Toast.LENGTH_SHORT).show();
                         try {
@@ -70,7 +95,6 @@ public class InitialActivity extends AppCompatActivity implements AsyncTaskGetJs
                 try {
                     DownloadActivity.urls = urls;
                     startActivity(intent);
-                    finish();
                 } catch (Exception e) {
                     Toast.makeText(this, "対象のアプリがありません:InitialActivity", Toast.LENGTH_SHORT).show();
                     finish();

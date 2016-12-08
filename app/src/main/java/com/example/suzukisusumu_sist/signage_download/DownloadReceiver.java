@@ -17,7 +17,7 @@ public class DownloadReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
 
             long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-            Toast.makeText(context, "Download Complete ID : " + id, Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "Download Complete ID : " + id, Toast.LENGTH_LONG).show();
 
             if (id != -1) {
                 Intent resultIntent = new Intent();
@@ -28,7 +28,7 @@ public class DownloadReceiver extends BroadcastReceiver {
                     context.startActivity(resultIntent);
                 } catch (Exception e) {
                     Toast.makeText(context, "対象のアプリがありません", Toast.LENGTH_SHORT).show();
-                }
+            }
             }
         } else {
             // ダウンロードマネージャの通知領域をクリックした場合はメッセージ表示のみ

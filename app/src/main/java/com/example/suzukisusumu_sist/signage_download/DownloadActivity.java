@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 public class DownloadActivity extends AppCompatActivity {
@@ -15,14 +16,17 @@ public class DownloadActivity extends AppCompatActivity {
     DownloadManager downloadManager;
     static int downloadNum;
     static String[] urls;
+    long id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
         tv = (TextView)findViewById(R.id.textView2);
         tv.setText(String.valueOf(downloadNum));
+        Log.d("DownLoadActivity","");
         //ダウンロードした件数が、URLsの件数を超えたら、再生Activityに遷移する。
         if(downloadNum<urls.length) {
+            Log.d("NewActivity",urls[downloadNum]);
             tv.setText("Downloading:"+urls[downloadNum]);
             VideoDownload(urls[downloadNum]);
             downloadNum++;
@@ -37,6 +41,12 @@ public class DownloadActivity extends AppCompatActivity {
         }
     }
 
+    //現在のアクティビティがバックグラウンドに移動した時、アクティビティを終了する。
+    @Override
+    protected void onPause(){
+        super.onPause();
+        finish();
+    }
     //s_urlの動画をダウンロード,完了後DownloadReceiverに遷移
     private void VideoDownload(String s_url){
         //URIを生成する
@@ -47,12 +57,17 @@ public class DownloadActivity extends AppCompatActivity {
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES,"/signage"+uri.getPath());
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setMimeType("video/mp4");
-        long id=downloadManager.enqueue(request);
+        id=downloadManager.enqueue(request);
         DownloadManager.Query query = new DownloadManager.Query();
         query.setFilterById(id);
         Cursor cursor = downloadManager.query(query);
         int idStatus = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
         cursor.moveToFirst();
         Log.d("DownloadManagerSample", cursor.getString(idStatus));
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode== KeyEvent.KEYCODE_BACK) downloadManager.remove(id);//バックボタンを押した場合、ダウンロードを中断する。
+        return super.onKeyDown(keyCode, event);
     }
 }
