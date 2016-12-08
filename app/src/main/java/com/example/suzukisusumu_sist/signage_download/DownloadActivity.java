@@ -69,5 +69,6 @@ public class DownloadActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode== KeyEvent.KEYCODE_BACK) downloadManager.remove(id);//バックボタンを押した場合、ダウンロードを中断する。
         return super.onKeyDown(keyCode, event);
+
     }
 }
