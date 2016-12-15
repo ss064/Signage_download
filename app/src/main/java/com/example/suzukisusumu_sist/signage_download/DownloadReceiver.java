@@ -20,6 +20,7 @@ public class DownloadReceiver extends BroadcastReceiver {
             //Toast.makeText(context, "Download Complete ID : " + id, Toast.LENGTH_LONG).show();
 
             if (id != -1) {
+                //ダウンロードが完了したら、もう一度DownloadActivityを開く
                 Intent resultIntent = new Intent();
                 resultIntent.setClassName(context.getPackageName(),"com.example.suzukisusumu_sist.signage_download.DownloadActivity");
                 resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -2,10 +2,11 @@ package com.example.suzukisusumu_sist.signage_download;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
+import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -16,9 +17,8 @@ import java.util.TimerTask;
 public class VideoActivity extends AppCompatActivity {
     public VideoView video;
     public EditText counter;
-    private String videoPath= Environment.getExternalStorageDirectory().getPath() + "/" + Environment.DIRECTORY_MOVIES +"/"+"Signage";
     // Movie/Signageフォルダの内のファイルを再生する。
-    private File[] files = new File(videoPath).listFiles();
+    private File[] files;
     public int videoPoint=0;//動画カウンター
 
     @Override
@@ -26,10 +26,17 @@ public class VideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         counter = (EditText) findViewById(R.id.Counter);
-
         video = (VideoView) findViewById(R.id.videoView);
-        //Signageフォルダの中身が空の場合、アプリを終了する。
-        if(files.length!=0) {
+        //MediaControllerを表示する設定
+        video.setMediaController(new MediaController(this));
+
+        try{
+            files = new File(InitialActivity.SIGNAGE_PATH).listFiles();
+        }catch (Exception e){
+            Log.d("Exception",e.getMessage());
+        }
+        //Signageフォルダがない、または中身が空の場合、アプリを終了する。
+        if(new File(InitialActivity.SIGNAGE_PATH).exists()|| files!=null) {
             //動画を再生する。
             VideoChange(files[videoPoint].getPath());
             //再生時間表示に関する処理
@@ -58,7 +65,7 @@ public class VideoActivity extends AppCompatActivity {
             });
         }
         else{
-            Toast.makeText(this, "動画を再生できませんでした。", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "動画を再生できませんでした。\nアプリを終了します。", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

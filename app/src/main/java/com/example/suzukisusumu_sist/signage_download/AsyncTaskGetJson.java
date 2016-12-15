@@ -18,6 +18,11 @@ import java.util.ArrayList;
 
 /**
  * Created by mizuno on 2016/01/14.
+ * 2016/12/10 suzuki
+ * org.apache.http.client.HttpClient等がdeprecatedになってしまったため
+ * build.gradle(Module: app)に
+ * useLibrary 'org.apache.http.legacy'
+ * を追加しました。
  */
 public class AsyncTaskGetJson extends AsyncTask<Void, Void, String> {
 
